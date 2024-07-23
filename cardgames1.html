@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Card game APIs" />
+    <meta name="Author" content="Laurence" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <title>Card Game via APIs</title>
+  </head>
+  <div class="container text-center">
+    <h1>Card Game via API online</h1>
+    <div class="row justify-content-center">
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_1"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_2"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_3"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_4"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_5"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-2 h1 align-item-center my-5">VS</div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_6"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_7"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_8"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_9"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="col-sm-2 col-md-1 overflow-hidden">
+        <img
+          id="card_10"
+          src="https://deckofcardsapi.com/static/img/X1.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div id="drawButton" class="col-4 btn btn-success my-3">Draw Card</div>
+  </div>
+  <div class="row justify-content-center">
+    <div id="shuffle" class="col-4 btn btn-success my-2">Shuffle Card</div>
+  </div>
+
+  <body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        let remainingCards = 52;
+        let deckID = "";
+        let cards = [
+          "#card_1",
+          "#card_2",
+          "#card_3",
+          "#card_4",
+          "#card_5",
+          "#card_6",
+          "#card_7",
+          "#card_8",
+          "#card_9",
+          "#card_10",
+        ];
+        let cardHash = {
+          2: 0,
+          3: 1,
+          4: 2,
+          5: 3,
+          6: 4,
+          7: 5,
+          8: 6,
+          9: 7,
+          0: 8,
+          J: 9,
+          Q: 10,
+          K: 11,
+          A: 12,
+        };
+
+        initGame();
+
+        $("#shuffle").on("click", function () {
+          initGame(10);
+        });
+
+        function drawCard(numCards) {
+          let request = $.ajax({
+            url: `https://www.deckofcardsapi.com/api/deck/${deckID}/draw/?count=${numCards}`,
+            method: "GET",
+            dataType: "html",
+          });
+
+          request.done(function (msg) {
+            console.log(msg);
+            msg = $.parseJSON(msg);
+            updateUI(msg);
+          });
+
+          request.fail(function (jqXHR, textStatus) {
+            //alert("Request failed: " + textStatus);
+          });
+        }
+
+        function initGame() {
+          remainingCards = 52;
+          cards.forEach((card) => {
+            $(card).attr("src", "https://deckofcardsapi.com/static/img/X1.png");
+          });
+
+          let request = $.ajax({
+            url: "https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
+            method: "GET",
+            dataType: "html",
+          });
+
+          request.done(function (msg) {
+            msg = $.parseJSON(msg);
+
+            deckID = msg["deck_id"];
+            $("#drawButton").on("click", function () {
+              drawCard(10);
+            });
+          });
+
+          request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+          });
+        }
+
+        function updateUI(objResp) {
+          console.log(objResp);
+          console.log(objResp.cards);
+          sortedCards = sortCards(objResp.cards);
+          sortCards(objResp.cards);
+          for (let i = 0; i < sortedCards.length; i++) {
+            $(cards[i]).attr("src", sortedCards[i].image);
+          }
+        }
+
+        function sortCards(cards) {
+          result = [];
+          cardsP1 = cards.slice(0, 5);
+          cardsP2 = cards.slice(5);
+          cardsP1.sort((a, b) => cardHash[a.code[0]] - cardHash[b.code[0]]);
+          cardsP2.sort((a, b) => cardHash[a.code[0]] - cardHash[b.code[0]]);
+          result = [...cardsP1, ...cardsP2];
+          return result;
+        }
+      });
+    </script>
+  </body>
+</html>
