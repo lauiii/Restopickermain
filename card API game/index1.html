@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="This is a Card Game from online API with jQuery and Bootstrap"
+    />
+    <meta name="Author" content="Angel/Ytac" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Card Game via API with jQuery and BStrap</title>
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1>Card Game with API</h1>
+      <div class="row">
+        <div class="col-sm-1-md-2 over">
+          <img
+            id="card1"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card2"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card3"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card4"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card5"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-12 col-md-12 h1 align-item-center">VS</div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card6"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card7"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card8"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card9"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="col-sm-1-md-2">
+          <img
+            id="card10"
+            src="https://deckofcardsapi.com/static/img/X1.png"
+            alt=""
+          />
+        </div>
+        <div class="btn btn-success col-10 my-5" id="drawCards">Draw Cards</div>
+        <div class="btn btn-success col-10 my-5" id="shuffleCards">
+          Shuffle Cards
+        </div>
+      </div>
+      <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"
+      ></script>
+      <script>
+        $("document").ready(function () {
+          let deckId = "";
+          initGame();
+          let cards = [
+            "#card_1",
+            "#card_2",
+            "#card_3",
+            "#card_4",
+            "#card_5",
+            "#card_6",
+            "#card_7",
+            "#card_8",
+            "#card_9",
+            "#card_10",
+          ];
+
+          function initGame() {
+            let request = $.ajax({
+              url: "https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
+              method: "GET",
+              dataType: "json",
+            });
+
+            request.done(function (msg) {
+              deckId = msg.deck_id;
+              addListener();
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+              alert("Request failed: " + textStatus);
+            });
+          }
+          function addListener() {
+            $("#drawCards").on("click", function () {
+              drawCards();
+            });
+          }
+          function drawCards() {
+            let request = $.ajax({
+              url: `https://www.deckofcardsapi.com/api/deck/${deckId}/draw/?count=10`,
+              method: "GET",
+              dataType: "json",
+            });
+
+            request.done(function (msg) {
+              console.log(msg);
+              updateUI(msg);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+              alert("Request failed: " + textStatus);
+            });
+          }
+          function updateUI(cards) {
+            console.log("to update");
+            console.log(cards, "naa na");
+            for (let i = 0; i < cards.cards.length; i++)
+              $(`#card${i + 1}`).attr("src", cards.cards[i].image);
+            // $("#card1").attr("src", msg.cards[1].image);
+            // $("#card2").attr("src", msg.cards[2].image);
+            // $("#card3").attr("src", msg.cards[3].image);
+            // $("#card4").attr("src", msg.cards[4].image);
+            // $("#card5").attr("src", msg.cards[5].image);
+            // $("#card6").attr("src", msg.cards[6].image);
+            // $("#card7").attr("src", msg.cards[7].image);
+            // $("#card8").attr("src", msg.cards[8].image);
+            // $("#card9").attr("src", msg.cards[9].image);
+            // $("#card10").attr("src", msg.cards[0].image);
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>

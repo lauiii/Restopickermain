@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="Author" content="Angel/Chrishia" />
+    <meta name=" Description" content="jQueryExrcise" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>jQueryExrcises</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Name</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tr>
+        <tbody>
+          <tr>
+            <td>123</td>
+            <td>Angel</td>
+            <td>Cumawas</td>
+          </tr>
+          <tr>
+            <td>456</td>
+            <td>Lloyd</td>
+            <td>Coleto</td>
+          </tr>
+          <tr>
+            <td>789</td>
+            <td>Yatc</td>
+            <td>Bongaitan</td>
+          </tr>
+        </tbody>
+      </tr>
+    </table>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("tbody").css("color", "black");
+        $("table").css("border", "2px solid black");
+        $("th").css("border", "2px solid black");
+        $("td").css("border", "2px solid black");
+        $("table").css("border-collapse", "collapse");
+        $("table").css("border", "2px solid black");
+        $("th").css("background-color", "black");
+        $("th").css("color", "white");
+        $("tbody tr").on("mouseover", function () {
+          $(this).css("background-color", "#ddd");
+        });
+        $("tbody tr").on("mouseout", function () {
+          $(this).css("background-color", "#fff");
+        });
+      });
+    </script>
+  </body>
+</html>
